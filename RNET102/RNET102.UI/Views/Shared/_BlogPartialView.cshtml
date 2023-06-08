@@ -1,0 +1,27 @@
+﻿@using RNET102.UI.Models;
+@model Blog
+<!--post-->
+<div class="animated hidden" data-animation="fadeInDown" data-animation-delay="200">
+	<article class="frame_container scale_image_container">
+		<figure class="relative">
+			<a href="#" class="d_block wrapper m_bottom_15"><img src="@Model.ImageURL" alt="" class="tr_all scale_image"></a>
+			<figcaption>
+				<div class="clearfix">
+					<!--post info (date & comments)-->
+					<div class="post_info f_left m_right_20 t_align_c lh_small m_sm_right_10">
+						<div class="date bg_scheme_color color_white second_font tt_uppercase m_bottom_15">
+							<b class="d_inline_b">@Model.PublishDate.Day</b>
+							<p class="fs_ex_small">@Model.PublishDate.ToString("MMM")</p>
+						</div>
+						<a href="#" class="sc_hover"><i class="fa fa-comments d_inline_m m_right_3"></i> <span class="fs_small d_inline_m">3</span></a>
+					</div>
+					<!--post excerpt-->
+					<div class="f_left post_excerpt m_bottom_15">
+						<h5 class="second_font m_bottom_13"><a href="#" class="sc_hover"><b>@Model.Title</b></a></h5>
+						<p class="fw_light">@Model.Content.Substring(0,Math.Min(Model.Content.Length,80))...</p>
+					</div>
+				</div>
+			</figcaption>
+		</figure>
+	</article>
+</div>

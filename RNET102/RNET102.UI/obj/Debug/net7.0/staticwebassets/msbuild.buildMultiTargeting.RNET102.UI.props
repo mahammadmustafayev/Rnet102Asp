@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\RNET102.UI.props" />
+</Project>

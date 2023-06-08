@@ -1,0 +1,13 @@
+﻿@using RNET102.UI.Models;
+@model IEnumerable<Blog>
+
+@{
+	int delay = 200;
+	foreach (var blog in Model)
+	{
+
+		@await Html.PartialAsync("_BlogPartialView",blog);
+		//<partial name="_BlogPartialView" />
+		delay += 150;
+	}
+}
