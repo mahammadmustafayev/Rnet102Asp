@@ -16,6 +16,11 @@ namespace RNET102.UI
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
+            builder.Services.AddMemoryCache();
+            builder.Services.AddStackExchangeRedisCache(option =>
+            {
+                option.Configuration = builder.Configuration.GetConnectionString("Redis");
+            });
             var app = builder.Build();
 
             using ( var scope= app.Services.CreateScope())

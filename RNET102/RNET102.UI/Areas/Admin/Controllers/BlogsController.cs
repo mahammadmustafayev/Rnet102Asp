@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using RNET102.UI.Data;
 using RNET102.UI.Models;
 
@@ -14,18 +15,32 @@ namespace RNET102.UI.Areas.Admin.Controllers
     public class BlogsController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly IMemoryCache _memoryCache;
 
-        public BlogsController(AppDbContext context)
+        public BlogsController(AppDbContext context,IMemoryCache memoryCache)
         {
             _context = context;
+            _memoryCache = memoryCache;
         }
 
         // GET: Admin/Blogs
         public async Task<IActionResult> Index()
         {
-              return _context.Blog != null ? 
-                          View(await _context.Blog.ToListAsync()) :
-                          Problem("Entity set 'AppDbContext.Blog'  is null.");
+            List<Blog> blogs;
+            DateTime date = DateTime.UtcNow;
+            if (!_memoryCache.TryGetValue("blogs",out blogs))
+            {
+                MemoryCacheEntryOptions cacheOptions = new MemoryCacheEntryOptions()
+                {
+                    SlidingExpiration = TimeSpan.FromSeconds(15),
+                    //AbsoluteExpiration = DateTime.UtcNow.AddSeconds(20)
+                };
+                _memoryCache.Set("blogs",await _context.Blog.ToListAsync(),cacheOptions);
+                _memoryCache.Set("date",DateTime.UtcNow);
+            }
+            blogs = _memoryCache.Get("blogs") as List<Blog>;
+            ViewBag.Date = _memoryCache.Get("date");
+            return View(blogs);
         }
 
         // GET: Admin/Blogs/Details/5

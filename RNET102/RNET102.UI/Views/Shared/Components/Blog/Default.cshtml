@@ -1,6 +1,27 @@
 ﻿@using RNET102.UI.Models;
 @model IEnumerable<Blog>
 
+<table>
+	<thead>
+		<tr>
+			<th>Content</th>
+			<th>PublishDate</th>
+			<th>ImageURL</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>@item.Content</td>
+				<td>@item.PublishDate</td>
+				<td><img width="150" src="@item.ImageURL" /></td>
+			</tr>
+		}
+	</tbody>
+</table>
+
+
 @*@{
 	int delay = 200;
 	foreach (var blog in Model)
